@@ -18,7 +18,7 @@ const CheckTable = ({ checks, history }: Props) => {
     null
   );
 
-  const [sortVal, setSortVal] = useState("");
+  const [sortVal, setSortedVal] = useState("");
 
   const openPanel = (healthCheck: Check, history: ExecutionHistory[]) => {
     setOpenPanel(true);
@@ -88,7 +88,7 @@ const CheckTable = ({ checks, history }: Props) => {
             <th style={{ width: "20%" }}>Name</th>
             <th style={{ width: "10%" }}>Tags</th>
             <th style={{ width: "10%" }}>
-              <button onClick={(e) => sortVal === "ascending" ? setSortVal("descending") : setSortVal("ascending")}>
+              <button onClick={(e) => sortVal === "ascending" ? setSortedVal("descending") : setSortedVal("ascending")}>
                 Health
               </button>
             </th>

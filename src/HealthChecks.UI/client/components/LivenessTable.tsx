@@ -13,7 +13,7 @@ interface LivenessTableProps {
 const LivenessTable: FunctionComponent<LivenessTableProps> = ({ livenessData, expandAll, collapseAll }) => {
 
   const [searchedVal, setSearchedVal] = useState("");
-  const [sortVal, setSortVal] = useState("");
+  const [sortVal, setSortedVal] = useState("");
 
   const mapTable = (livenessData: Array<Liveness>): Array<Liveness> => {
     return livenessData.map(liveness => {
@@ -62,7 +62,7 @@ const LivenessTable: FunctionComponent<LivenessTableProps> = ({ livenessData, ex
             </th>
             <th>Name</th>
             <th>
-              <button onClick={(e) => sortVal === "ascending" ? setSortVal("descending") : setSortVal("ascending")}>
+              <button onClick={(e) => sortVal === "ascending" ? setSortedVal("descending") : setSortedVal("ascending")}>
                 Health
               </button>
             </th>

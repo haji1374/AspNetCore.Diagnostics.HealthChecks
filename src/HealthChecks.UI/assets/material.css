@@ -79,3 +79,14 @@ th > button {
   animation-duration: 10ms;
   padding: 16.5px 14px;
 }
+
+#footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--bgAside);
+  color: white;
+  padding: 10px;
+  /*text-align: center;*/
+}

@@ -31,7 +31,7 @@
 
   <Target Name="InstallPackages" BeforeTargets="BeforeBuild">
     <Message Importance="high" Text="*** Installing npm packages ***" />
-    <Exec Command="npm install" ContinueOnError="false" />
+    <Exec Command="npm install --legacy-peer-deps" ContinueOnError="false" />
   </Target>
 
   <Target Name="BuildClient" BeforeTargets="BeforeBuild" DependsOnTargets="InstallPackages">

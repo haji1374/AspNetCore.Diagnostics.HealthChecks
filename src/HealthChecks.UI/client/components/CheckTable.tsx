@@ -18,6 +18,8 @@ const CheckTable = ({ checks, history }: Props) => {
     null
   );
 
+  const [sortVal, setSortVal] = useState("");
+
   const openPanel = (healthCheck: Check, history: ExecutionHistory[]) => {
     setOpenPanel(true);
     setSelectedHistory(history);
@@ -27,9 +29,9 @@ const CheckTable = ({ checks, history }: Props) => {
   useEffect(() => {
     const interval = !isOpenPanel
       ? setTimeout(() => {
-          setSelectedHealthcheck(null);
-          setSelectedHistory(null);
-        }, 200)
+        setSelectedHealthcheck(null);
+        setSelectedHistory(null);
+      }, 200)
       : 0;
 
     return () => {
@@ -43,7 +45,7 @@ const CheckTable = ({ checks, history }: Props) => {
         <td colSpan={5}>{checks}</td>
       </tr>
     ) : (
-      checks.map((item, index) => {
+      checks.sort((a, b) => calculateSort(a, sortVal) - calculateSort(b, sortVal)).map((item, index) => {
         const tags = item.tags
           ? item.tags.map((tag) => <span className="tag">{tag}</span>)
           : null;
@@ -85,7 +87,11 @@ const CheckTable = ({ checks, history }: Props) => {
           <tr>
             <th style={{ width: "20%" }}>Name</th>
             <th style={{ width: "10%" }}>Tags</th>
-            <th style={{ width: "10%" }}>Health</th>
+            <th style={{ width: "10%" }}>
+              <button onClick={(e) => sortVal === "ascending" ? setSortVal("descending") : setSortVal("ascending")}>
+                Health
+              </button>
+            </th>
             <th style={{ width: "30%" }}>Description</th>
             <th style={{ width: "20%" }}>Duration</th>
             <th style={{ width: "10%" }}>Details</th>
@@ -105,5 +111,32 @@ const CheckTable = ({ checks, history }: Props) => {
     </>
   );
 };
+
+function calculateSort(item: Check, sortVal: string): number {
+  if (sortVal === 'ascending') {
+    switch (item.status.toLowerCase()) {
+      case "healthy":
+        return 0;
+        break;
+      case "unhealthy":
+        return 2;
+        break;
+      default:
+        return 1;
+    }
+  }
+  else {
+    switch (item.status.toLowerCase()) {
+      case "healthy":
+        return 2;
+        break;
+      case "unhealthy":
+        return 0;
+        break;
+      default:
+        return 1;
+    }
+  }
+}
 
 export { CheckTable };

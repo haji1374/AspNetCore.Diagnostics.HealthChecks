@@ -86,7 +86,7 @@ th > button {
   bottom: 0;
   width: 100%;
   background-color: var(--bgAside);
-  color: white;
+  color: var(--fcNegative);
   padding: 5px;
   /*text-align: center;*/
 }

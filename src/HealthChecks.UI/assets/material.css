@@ -90,3 +90,16 @@ th > button {
   padding: 5px;
   /*text-align: center;*/
 }
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: var(--fcNegative);
+  opacity: 0.6; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: var(--fcNegative);
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: var(--fcNegative);
+}

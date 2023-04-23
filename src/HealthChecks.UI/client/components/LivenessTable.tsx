@@ -16,20 +16,7 @@ const LivenessTable: FunctionComponent<LivenessTableProps> = ({ livenessData, ex
   const [sortVal, setSortedVal] = useState("");
 
   const mapTable = (livenessData: Array<Liveness>): Array<Liveness> => {
-    return livenessData.filter((row) => !searchedVal.length 
-                                      || row.name
-                                        .toString()
-                                        .toLowerCase()
-                                        .includes(searchedVal.toString().toLowerCase())
-                                      || (!row.entries.length && row.entries.some(a => a.name
-                                        .toString()
-                                        .toLowerCase()
-                                        .includes(searchedVal.toString().toLowerCase())))
-                                      || (!row.entries.length && row.entries.some(a => a.tags.some(i => i
-                                        .toString()
-                                        .toLowerCase()
-                                        .includes(searchedVal.toString().toLowerCase()))))
-  ).map(liveness => {
+    return livenessData.map(liveness => {
       if (liveness.livenessResult) {
         let checks;
         try {
@@ -62,7 +49,7 @@ const LivenessTable: FunctionComponent<LivenessTableProps> = ({ livenessData, ex
 
   return (
     <div>
-      <input className="my-input" onChange={(e) => setSearchedVal(e.target.value)} placeholder="Search" />
+      <input className="my-input" onChange={(e) => setSearchedVal(e.target.value.toString().toLowerCase())} placeholder="Search" />
       <table className="hc-table">
         <thead className="hc-table__head">
           <tr>
@@ -84,7 +71,14 @@ const LivenessTable: FunctionComponent<LivenessTableProps> = ({ livenessData, ex
           </tr>
         </thead>
         <tbody className="hc-table__body">
-          {mapTable(livenessData).sort((a, b) => calculateSort(a, sortVal) - calculateSort(b, sortVal)).map((item, index) => {
+          {mapTable(livenessData).filter((row) => !searchedVal.length
+            || row.name.toString().toLowerCase().includes(searchedVal)
+            || (row.entries.length > 0 &&
+              (row.entries.some(a => a.name.toString().toLowerCase().includes(searchedVal)) ||
+                row.entries.some(a => a.tags !== null && a.tags !== undefined && a.tags.some(i => i.toString().toLowerCase().includes(searchedVal)))
+              )
+            )
+          ).sort((a, b) => calculateSort(a, sortVal) - calculateSort(b, sortVal)).map((item, index) => {
             const statusConfig = getStatusConfig(item.status);
             return (
               <React.Fragment key={index}>
@@ -119,7 +113,11 @@ const LivenessTable: FunctionComponent<LivenessTableProps> = ({ livenessData, ex
                 </tr>
                 <tr className="hc-checks-table-container is-hidden">
                   <td colSpan={5}>
-                    <CheckTable checks={item.entries} history={item.history} />
+                    <CheckTable checks={item.entries.filter(a => !searchedVal.length ||
+                      item.name.toString().toLowerCase().includes(searchedVal) ||
+                      a.name.toString().toLowerCase().includes(searchedVal) ||
+                      (a.tags !== null && a.tags !== undefined && a.tags.some(a => a.toString().toLowerCase().includes(searchedVal)))
+                    )} history={item.history} />
                   </td>
                 </tr>
               </React.Fragment>
